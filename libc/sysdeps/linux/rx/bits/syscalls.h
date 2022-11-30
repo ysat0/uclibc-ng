@@ -64,7 +64,7 @@
   register unsigned long r5 __asm__("r5") = __arg5;	\
   register unsigned long r15 __asm__("r15") = name
 
-#define ASM_ARGS_6	, "0"(r1), "r"(r2), "r"(r3), "r"(r4), "r"(r5), "r"(r7)
+#define ASM_ARGS_6	, "0"(r1), "r"(r2), "r"(r3), "r"(r4), "r"(r5), "r"(r14)
 #define ARGS_6(name, a1, a2, a3, a4, a5, a6)		\
   unsigned long __arg1 = (unsigned long)a1;		\
   unsigned long __arg2 = (unsigned long)a2;		\
@@ -77,7 +77,7 @@
   register unsigned long r3 __asm__("r3") = __arg3;	\
   register unsigned long r4 __asm__("r4") = __arg4;	\
   register unsigned long r5 __asm__("r5") = __arg5;	\
-  register unsigned long r7 __asm__("r7") = __arg6;	\
+  register unsigned long r14 __asm__("r14") = __arg6;	\
   register unsigned long r15 __asm__("r15") = name
 
 #define INTERNAL_SYSCALL_NCS(name, err, nr, args...)	\
