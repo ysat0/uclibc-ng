@@ -38,7 +38,7 @@ clone:
 	mov.l	[r0+],r2
 	mov.l	[r0+],r1
 	jsr	r2
-	mov.l	#_NR_exit,r8
+	mov.l	#__NR_exit,r8
 	int	#0x08
 
 2:
