@@ -519,6 +519,12 @@ ifeq ($(TARGET_ARCH),c6x)
 	CPU_LDFLAGS-y += $(CPU_CFLAGS)
 endif
 
+ifeq ($(TARGET_ARCH),rx)
+ifeq ($(UCLIBC_FORMAT_FDPIC_ELF),y)
+	CPU_CFLAGS-y:=-mfdpic
+endif
+endif
+
 $(eval $(call check-gcc-var,$(PIEFLAG_NAME)))
 PIEFLAG := $(CFLAG_$(PIEFLAG_NAME))
 ifeq ($(PIEFLAG),)
