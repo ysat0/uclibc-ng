@@ -112,9 +112,11 @@ static __always_inline _syscall3(unsigned long, _dl_write, int, fd,
 static __always_inline _syscall3(unsigned long, _dl_read, int, fd,
                         const void *, buf, unsigned long, count)
 
+#if defined(__NR_mprotect)  
 #define __NR__dl_mprotect __NR_mprotect
 static __always_inline _syscall3(int, _dl_mprotect, const void *, addr,
                         unsigned long, len, int, prot)
+#endif
 
 #if defined __NR_fstatat64 && !defined __NR_stat
 # define __NR__dl_fstatat64 __NR_fstatat64
@@ -278,7 +280,7 @@ static __always_inline _syscall2(int, _dl_gettimeofday, struct timeval *, tv,
 #define MAP_FAILED ((void *) -1)
 #define _dl_mmap_check_error(X) (((void *)X) == MAP_FAILED)
 
-static __always_inline
+  static /* __always_inline */
 void *_dl_mmap(void *addr, unsigned long size, int prot,
                int flags, int fd, unsigned long offset)
 {
