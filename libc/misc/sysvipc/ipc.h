@@ -19,6 +19,7 @@
 extern int __syscall_ipc (unsigned int __call, long __first, long __second,
 					  long __third, void *__ptr, void *__fifth) attribute_hidden;
 
+#endif
 
 /* The codes for the functions to use the multiplexer `__syscall_ipc'.  */
 #define IPCOP_semop	 1
@@ -34,6 +35,5 @@ extern int __syscall_ipc (unsigned int __call, long __first, long __second,
 #define IPCOP_shmget	23
 #define IPCOP_shmctl	24
 
-#endif
 
 #endif							/* IPC_H */

@@ -24,13 +24,13 @@ int setrlimit(__rlimit_resource_t resource, struct rlimit *rlimits)
 	return __syscall_usetrlimit(resource, rlimits);
 }
 
-#elif !defined(__UCLIBC_HANDLE_OLDER_RLIMIT__)
+#elif !defined(__UCLIBC_HANDLE_OLDER_RLIMIT__) && defined(__NR_setrlimit)
 
 /* We don't need to wrap setrlimit() */
 _syscall2(int, setrlimit, __rlimit_resource_t, resource,
 		const struct rlimit *, rlim)
 
-#else
+#elif defined(__NR_setrlimit)
 
 # define __need_NULL
 # include <stddef.h>
@@ -58,6 +58,12 @@ int setrlimit(__rlimit_resource_t resource, const struct rlimit *rlimits)
 	rlimits_small.rlim_max = MIN((unsigned long int) rlimits->rlim_max,
 								  RLIM_INFINITY >> 1);
 	return __syscall_setrlimit(resource, &rlimits_small);
+}
+#else
+int setrlimit(__rlimit_resource_t resource, const struct rlimit *rlimits)
+{
+	errno = -ENOSYS;
+	return -1;
 }
 #endif
 libc_hidden_def(setrlimit)

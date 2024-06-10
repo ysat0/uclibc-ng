@@ -9,9 +9,17 @@
 #include <sys/syscall.h>
 #include <sys/wait.h>
 
+#if defined(__NR_wait4)
 # define __NR___syscall_wait4 __NR_wait4
 static __always_inline _syscall4(int, __syscall_wait4, __kernel_pid_t, pid,
 				 int *, status, int, opts, struct rusage *, rusage)
+#else
+int __syscall_wait4(__kernel_pid_t pid, int *status, int opts, struct rusage *rusage)
+{
+	errno = -ENOSYS;
+	return -1;
+}
+#endif
 
 pid_t __wait4_nocancel(pid_t pid, int *status, int opts, struct rusage *rusage)
 {

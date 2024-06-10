@@ -35,6 +35,12 @@ int settimeofday(const struct timeval *tv, const struct timezone *tz)
 	when = tv->tv_sec + (tv->tv_usec / 1000000);
 	return stime(&when);
 }
+# else
+int settimeofday(const struct timeval *tv, const struct timezone *tz)
+{
+	errno = -ENOSYS;
+	return -1;
+}
 # endif
 # if defined __NR_settimeofday || (defined __USE_SVID && defined __NR_stime)
 libc_hidden_def(settimeofday)

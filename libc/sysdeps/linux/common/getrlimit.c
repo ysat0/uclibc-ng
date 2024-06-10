@@ -24,13 +24,13 @@ int getrlimit(__rlimit_resource_t resource, struct rlimit *rlimits)
 	return __syscall_ugetrlimit(resource, rlimits);
 }
 
-#elif !defined(__UCLIBC_HANDLE_OLDER_RLIMIT__)
+#elif !defined(__UCLIBC_HANDLE_OLDER_RLIMIT__) && defined(__NR_getrlimit)
 
 /* We don't need to wrap getrlimit() */
 _syscall2(int, getrlimit, __rlimit_resource_t, resource,
 	  struct rlimit *, rlim)
 
-#else
+#elif defined(__NR_getrlimit)
 
 /* we have to handle old style getrlimit() */
 # define __NR___syscall_getrlimit __NR_getrlimit
@@ -53,6 +53,12 @@ int getrlimit(__rlimit_resource_t resource, struct rlimit *rlimits)
 	if (rlimits->rlim_max == RLIM_INFINITY >> 1)
 		rlimits->rlim_max = RLIM_INFINITY;
 	return result;
+}
+#else
+int getrlimit(__rlimit_resource_t resource, struct rlimit *rlimits)
+{
+	errno = -ENOSYS;
+	return -1;
 }
 #endif
 libc_hidden_def(getrlimit)

@@ -23,6 +23,14 @@
 
 #include "ipc.h"
 
+#if !defined(__NR_ipc)
+static int __syscall_ipc(unsigned int __call, long __first, long __second,
+					  long __third, void *__ptr, void *__fifth)
+{
+	errno = -ENOSYS;
+	return -1;
+}
+#endif
 
 #ifdef L_semctl
 /* Return identifier for array of NSEMS semaphores associated with

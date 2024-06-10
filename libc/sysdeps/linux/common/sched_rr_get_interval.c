@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/syscall.h>
 
+#if defined(__NR_sched_rr_get_interval)
 #define __NR___syscall_sched_rr_get_interval __NR_sched_rr_get_interval
 static __inline__ _syscall2(int, __syscall_sched_rr_get_interval,
 		__kernel_pid_t, pid, struct timespec *, tp)
@@ -18,3 +19,10 @@ int sched_rr_get_interval(pid_t pid, struct timespec *tp)
 {
 	return (__syscall_sched_rr_get_interval(pid, tp));
 }
+#else
+int sched_rr_get_interval(pid_t pid, struct timespec *tp)
+{
+	errno = -ENOSYS;
+	return -1;
+}
+#endif
