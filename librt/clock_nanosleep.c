@@ -37,7 +37,11 @@ clock_nanosleep (clockid_t clock_id, int flags, const struct timespec *req,
     clock_id = MAKE_PROCESS_CPUCLOCK (0, CPUCLOCK_SCHED);
 
 #if defined(SINGLE_THREAD_P)
+#if defined(__NR_clock_nanosleep)
     r = INTERNAL_SYSCALL (clock_nanosleep, err, 4, clock_id, flags, req, rem);
+#else
+    r = -ENOSYS;
+#endif
 #else
     {
       int oldstate = LIBC_CANCEL_ASYNC ();

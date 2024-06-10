@@ -8,9 +8,23 @@
 #include <unistd.h>
 #include <cancel.h>
 
+#if defined(__NR_mq_timedreceive)
 #define __NR___mq_timedreceive_nocancel __NR_mq_timedreceive
 _syscall5(ssize_t, __NC(mq_timedreceive), mqd_t, mqdes, char *__restrict, msg_ptr, size_t, msg_len, unsigned int *__restrict, msq_prio, const struct timespec *__restrict, abs_timeout)
 
 CANCELLABLE_SYSCALL(ssize_t, mq_timedreceive, (mqd_t mqdes, char *__restrict msg_ptr, size_t msq_len, unsigned int *__restrict msq_prio, const struct timespec *__restrict abs_timeout),
 		    (mqdes, msg_ptr, msq_len, msq_prio, abs_timeout))
+#else
+ssize_t mq_timedreceive(mqd_t mqdes, char *__restrict msg_ptr, size_t msg_len, unsigned int *__restrict msq_prio, const struct timespec *__restrict abs_timeout)
+{
+  errno = -ENOSYS;
+  return -1;
+}
+
+ssize_t mq_timedreceive_nocancel(mqd_t mqdes, char *__restrict msg_ptr, size_t msg_len, unsigned int *__restrict msq_prio, const struct timespec *__restrict abs_timeout)
+{
+  errno = -ENOSYS;
+  return -1;
+}
+#endif
 lt_libc_hidden(mq_timedreceive)
