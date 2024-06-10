@@ -270,6 +270,7 @@ typedef struct
 #define EM_CRX		114		/* National Semiconductor CRX */
 #define EM_TI_C6000	140
 #define EM_NDS32	167		/* Andes Tech NDS32 */
+#define EM_RX           173	        /* Renesas RX family */
 #define EM_METAG	174		/* Imagination Technologies Meta */
 #define EM_AARCH64	183		/* ARM AARCH64 */
 #define EM_MICROBLAZE	189		/* Xilinx Microblaze */
@@ -3887,6 +3888,56 @@ typedef Elf32_Addr Elf32_Conflict;
 #define R_RISCV_32_PCREL        57
 
 #define R_RISCV_NUM             58
+
+/* RX relocation */
+#define R_RX_NONE		0
+#define R_RX_DIR32		1
+#define R_RX_DIR24S		2
+#define R_RX_DIR16		3
+#define R_RX_DIR16U		4
+#define R_RX_DIR16S		5
+#define R_RX_DIR8		6
+#define R_RX_DIR8U		7
+#define R_RX_DIR8S		8
+#define R_RX_DIR24S_PCREL	9
+#define R_RX_DIR16S_PCREL	10
+#define R_RX_DIR8S_PCREL	11
+#define R_RX_DIR16UL		12
+#define R_RX_DIR16UW		13
+#define R_RX_DIR8UL		14
+#define R_RX_DIR8UW		15
+#define R_RX_DIR32_REV		16
+#define R_RX_DIR16_REV		17
+#define R_RX_DIR3U_PCREL	18
+#define R_RX_GOT		19
+#define R_RX_PLT		20
+#define R_RX_COPY		21
+#define R_RX_GLOB_DAT		22
+#define R_RX_JMP_SLOT		23
+#define R_RX_RELATIVE		24
+#define R_RX_GOTOFF		25
+#define R_RX_GOTPC		26
+#define R_RX_GOTFUNCDESC	27
+#define R_RX_GOTOFFFUNCDESC	28
+#define R_RX_FUNCDESC		29
+#define R_RX_FUNCDESC_VALUE	30
+#define R_RX_ABS32		65
+#define R_RX_ABS24S		66
+#define R_RX_ABS16		67
+#define R_RX_ABS16U		68
+#define R_RX_ABS16S		69
+#define R_RX_ABS8		70
+#define R_RX_ABS8U		71
+#define R_RX_ABS8S		72
+#define R_RX_ABS24S_PCREL	73
+#define R_RX_ABS16S_PCREL	74
+#define R_RX_ABS8S_PCREL	75
+#define R_RX_ABS16UL		76
+#define R_RX_ABS16UW		77
+#define R_RX_ABS8UL		78
+#define R_RX_ABS8UW		79
+#define R_RX_ABS32_REV		80
+#define R_RX_ABS16_REV		81
 
 #ifdef	__cplusplus
 }
