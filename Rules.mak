@@ -523,6 +523,9 @@ endif
 ifeq ($(TARGET_ARCH),xtensa)
 	CPU_CFLAGS-$(UCLIBC_FORMAT_FDPIC_ELF) += -mfdpic
 endif
+ifeq ($(TARGET_ARCH),rx)
+	CPU_CFLAGS-y:=-mfdpic
+endif
 
 $(eval $(call check-gcc-var,$(PIEFLAG_NAME)))
 PIEFLAG := $(CFLAG_$(PIEFLAG_NAME))
