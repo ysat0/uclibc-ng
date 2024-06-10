@@ -42,6 +42,10 @@ $(eval $(call check-gcc-var,-mno-long-calls))
 CFLAGS-ldso.c += $(CFLAGS_-mno-long-calls)
 endif
 
+ifeq ($(TARGET_ARCH),rx)
+CFLAGS-ldso.c += -fno-tree-loop-distribute-patterns
+endif
+
 LDFLAGS-$(UCLIBC_FORMAT_DSBT_ELF)-$(UCLIBC_LDSO_NAME).so := -Wl,--dsbt-index=1
 ifneq ($(SUPPORT_LD_DEBUG),y)
 LDFLAGS-$(UCLIBC_LDSO_NAME).so := $(LDFLAGS)
