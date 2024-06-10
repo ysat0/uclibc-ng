@@ -1,6 +1,6 @@
 /* Startup code for RX
    Copyright (C) 1999 Free Software Foundation, Inc.
-   Copyright (C) 2010 Yoshinori Sato
+   Copyright (C) 2010, 2022 Yoshinori Sato
 
  This program is free software; you can redistribute it and/or modify it under
  the terms of the GNU Library General Public License as published by the Free
@@ -27,25 +27,54 @@
 	.weak	_init
 	.weak	_fini
 	
-	.text
-
 /*	
 void __uClibc_main(int (*main)(int, char **, char **), int argc,
 	                    char **argv, void (*app_init)(void), void (*app_fini)(void)
 	,
 	                    void (*rtld_fini)(void), void *stack_end attribute_unused)
 */
+	.text
+	.globl	_start
+	.type	_start,%function
+	.align	2
 _start:
-	mov.l	[r0],r2
-	add	#4,r0,r3
-	mov.l	r0,[-r0]
-	mov.l	#0,r1
-	mov.l	r1,[-r0]
-	mov.l	#_fini,r1
-	mov.l	r1,[-r0]
+#if defined(__FDPIC__)
+/*
+  r11 - exec map
+  r12 - interp map
+  r13 - fdpic regs
+  r14 - dl_fini GOT (from interp)
+*/
+1:
+	mvfc	pc, r10
+	add	#__ROFIXUP_LIST__ - 1b, r10, r2
+	add	#__ROFIXUP_END__ - 1b, r10, r3
+	mov	r11, r1
+	bsr	__self_reloc
+	add	#main@GOTOFFFUNCDESC, r13, r1
+	mov.l	[r0], r2	/* argc */
+	mov.l	4[r0], r3	/* argv */
+	add	#_init@GOTOFFFUNCDESC, r13, r4
+	add	#_fini@GOTOFFFUNCDESC, r13, r5
+	tst	r12,r12
+	bne	2f
+	mov	#0, r14
+2:	
+	add	#-8, r0
+	mov.l	r5, [r0]
+	mov.l	r14, 4[r0]	/* rtld_fini GOT */
+	bsr	__uClibc_main@PLT
+#else	/* static */
+	mov.l	[r0],r2		/* argc */
+	mov.l	4[r0],r3	/* argv */
+	mov.l	#_init, r4
+	mov.l	#0, r5
+	mov.l	r5, [-r0]	/* rtld_fini */
+	mov.l	#_fini, r5
+	mov.l	r5, [-r0]	/* fini */
 	mov.l	#main, r1
-	mov.l	#_init,r4
 	bsr	__uClibc_main
+#endif
 
 	/* If that didn't kill us, ... */
 __exit:
