@@ -23,7 +23,7 @@ License along with uClibc; see the file COPYING.LIB.  If not, see
 /*
  *    _dl_linux_resolve() FDPIC version receives the following parameters from
  *    lazy PLT entry:
- *    R12: GOT address for the resolver GOT
+ *    R14: GOT address for the resolver GOT
  *    R5: funcdesc_value_reloc_offset(foo)
  *    R13: GOT address for the caller GOT
  *    _dl_linux_resolver() will return a function descriptor address in R1.
@@ -32,12 +32,11 @@ _dl_linux_resolve:
 	pushm	r1-r4
 	mov.l	8[r13], r1
 	mov	r5, r2
-	mov.l	r13, r12
+	mov.l	r14, r13
 	bsr	_dl_linux_resolver
-	mov.l	r13, 4[r1]
-	mov.l	r14, [r1]
+	mov.l	4[r1],r13
+	mov.l	[r1],r14
 	popm	r1-r4
-	add	#4, r0
 	jmp	r14
 
 	.size _dl_linux_resolve, .-_dl_linux_resolve
