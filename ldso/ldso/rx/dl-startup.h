@@ -42,17 +42,17 @@ __asm__(
 	"	mov	r12, r3\n"
 	"	mov	r13, r4\n"
 	"	mov	r1, r13\n"
-	"	mov	r0, r5\n"
-	"	add	#-16, r0\n"
+	"	add	#8, r0, r5\n"
+	"	add	#-24, r0\n"
 	"	mov.l	r5, 4[r0]\n"
-	"	add	#-8, r5\n"
+	"	add	#-16, r5\n"
 	"	mov.l	r5, [r0]\n"
 	"	bsr	_dl_start\n"
 	/* Now compute parameters for entry point according to FDPIC ABI.  */
-	"	add	#_dl_fini@GOTFUNCDESC, r13, r14\n"
-	"	mov	12[r0], r13\n"
-	"	mov	8[r0], r5\n"
-	"	add 	#16, r0\n"
+	"	add	#_dl_fini@GOTOFFFUNCDESC, r13, r14\n"
+	"	mov	20[r0], r13\n"
+	"	mov	16[r0], r5\n"
+	"	add 	#24, r0\n"
 	"	jmp	r5\n"
 	".loopforever:\n"
 	"	bra	.loopforever\n"
@@ -64,7 +64,7 @@ __asm__(
 /* Get a pointer to the argv array.  On many platforms this can be just
  * the address of the first argument, on other platforms we need to
  * do something a little more subtle here.  */
-#define GET_ARGV(ARGVP, ARGS) ARGVP = (((unsigned long*)ARGS)+1)
+#define GET_ARGV(ARGVP, ARGS) ARGVP = (((unsigned long *)ARGS) + 1)
 
 /* Handle relocation of the symbols in the dynamic loader. */
 static /*__always_inline*/
