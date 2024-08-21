@@ -42,7 +42,7 @@ unsigned long _dl_linux_resolver(struct elf_resolve * tpnt, int reloc_entry);
 
 #define elf_machine_type_class(type)					\
   ((((type) == R_RX_JMP_SLOT || (type) == R_RX_FUNCDESC_VALUE ||	\
-     (type) == R_RX_FUNCDESC || (type) == R_RX_ABS32)			\
+     (type) == R_RX_FUNCDESC || (type) == R_RX_DIR32)			\
     * ELF_RTYPE_CLASS_PLT)						\
    | (((type) == R_RX_COPY) * ELF_RTYPE_CLASS_COPY))
 

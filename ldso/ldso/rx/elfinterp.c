@@ -199,10 +199,9 @@ _dl_do_reloc (struct elf_resolve *tpnt,struct r_scope_elem *scope,
 		 * symbol value of zero, and using the module containing the
 		 * reloc itself.
 		 */
-		symbol_addr = symtab[symtab_index].st_value;
+		symbol_addr = (unsigned long) DL_RELOC_ADDR(tpnt->loadaddr, rpnt->r_addend);
 		def_mod = tpnt;
 	}
-
 #if defined (__SUPPORT_LD_DEBUG__)
 	{
 		unsigned long old_val;
@@ -213,15 +212,13 @@ _dl_do_reloc (struct elf_resolve *tpnt,struct r_scope_elem *scope,
 		switch (reloc_type) {
 			case R_RX_NONE:
 				break;
-			case R_RX_DIR32:
-				*reloc_addr += symbol_addr;
-				break;
 			case R_RX_GLOB_DAT:
 			case R_RX_JMP_SLOT:
+
 				*reloc_addr = symbol_addr;
 				break;
 			case R_RX_RELATIVE:
-				*reloc_addr = DL_RELOC_ADDR(tpnt->loadaddr, *reloc_addr);
+			  _dl_dprintf(_dl_debug_file, "%s %x %x\n", symname, reloc_addr, symbol_addr);				*reloc_addr = DL_RELOC_ADDR(tpnt->loadaddr, *reloc_addr);
 				break;
 #ifdef __FDPIC__
 			case R_RX_FUNCDESC_VALUE:

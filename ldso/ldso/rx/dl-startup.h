@@ -74,12 +74,12 @@ void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, unsigned long *reloc_addr,
 	switch (ELF_R_TYPE(rpnt->r_info)) {
 		case R_RX_NONE:
 			break;
-		case R_RX_DIR32:
-			*reloc_addr += symbol_addr;
-			break;
 		case R_RX_GLOB_DAT:
 		case R_RX_JMP_SLOT:
-			*reloc_addr = symbol_addr;
+			if (symtab)
+				*reloc_addr = symbol_addr;
+			else
+				*reloc_addr = DL_RELOC_ADDR(load_addr, rpnt->r_addend);
 			break;
 		case R_RX_RELATIVE:
 			*reloc_addr = DL_RELOC_ADDR(load_addr, rpnt->r_addend);
