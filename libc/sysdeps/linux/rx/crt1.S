@@ -53,7 +53,7 @@ _start:
 	bsr	__self_reloc
 	add	#main@GOTOFFFUNCDESC, r13, r1
 	mov.l	[r0], r2	/* argc */
-	mov.l	4[r0], r3	/* argv */
+	add	#4, r0, r3	/* **argv */
 	add	#_init@GOTOFFFUNCDESC, r13, r4
 	add	#_fini@GOTOFFFUNCDESC, r13, r5
 	tst	r12,r12
