@@ -67,7 +67,7 @@ __asm__(
 #define GET_ARGV(ARGVP, ARGS) ARGVP = (((unsigned long *)ARGS) + 1)
 
 /* Handle relocation of the symbols in the dynamic loader. */
-static /*__always_inline*/
+static __always_inline
 void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, unsigned long *reloc_addr,
 	unsigned long symbol_addr, DL_LOADADDR_TYPE load_addr, Elf32_Sym *symtab)
 {
@@ -89,7 +89,7 @@ void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, unsigned long *reloc_addr,
 			{
 				struct funcdesc_value *dst = (struct funcdesc_value *) reloc_addr;
 
-				dst->entry_point += symbol_addr;
+				dst->entry_point = symbol_addr + rpnt->r_addend;
 				dst->got_value = load_addr.got_value;
 			}
 			break;
