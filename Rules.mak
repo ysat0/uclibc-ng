@@ -524,6 +524,7 @@ ifeq ($(TARGET_ARCH),xtensa)
 	CPU_CFLAGS-$(UCLIBC_FORMAT_FDPIC_ELF) += -mfdpic
 endif
 ifeq ($(TARGET_ARCH),rx)
+# RX only supported FDPIC_ELF
 	CPU_CFLAGS-y:=-mfdpic
 endif
 
