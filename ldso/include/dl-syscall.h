@@ -117,10 +117,16 @@ static __always_inline _syscall3(unsigned long, _dl_write, int, fd,
 static __always_inline _syscall3(unsigned long, _dl_read, int, fd,
                         const void *, buf, unsigned long, count)
 
+#if defined __NR_mprotect
 #define __NR__dl_mprotect __NR_mprotect
 static __always_inline _syscall3(int, _dl_mprotect, const void *, addr,
                         unsigned long, len, int, prot)
-
+#else
+static __always_inline int _dl_mprotect(const void * addr, unsigned long len, int prot)
+{
+	return -ENOSYS;
+}
+#endif
 #if defined __NR_fstatat64 && !defined __NR_stat && (!defined(__UCLIBC_USE_TIME64__) || defined(__sparc__))
 # define __NR__dl_fstatat64 __NR_fstatat64
 static __always_inline _syscall4(int, _dl_fstatat64, int, fd, const char *,
