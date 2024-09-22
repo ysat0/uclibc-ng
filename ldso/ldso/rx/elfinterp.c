@@ -218,7 +218,10 @@ _dl_do_reloc (struct elf_resolve *tpnt,struct r_scope_elem *scope,
 				*reloc_addr = symbol_addr;
 				break;
 			case R_RX_RELATIVE:
-			  _dl_dprintf(_dl_debug_file, "%s %x %x\n", symname, reloc_addr, symbol_addr);				*reloc_addr = DL_RELOC_ADDR(tpnt->loadaddr, *reloc_addr);
+#if defined (__SUPPORT_LD_DEBUG__)
+				_dl_dprintf(_dl_debug_file, "%s %x %x\n", symname, reloc_addr, symbol_addr);
+#endif
+				*reloc_addr = DL_RELOC_ADDR(tpnt->loadaddr, *reloc_addr);
 				break;
 #ifdef __FDPIC__
 			case R_RX_FUNCDESC_VALUE:
